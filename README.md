@@ -8,6 +8,6 @@
 
 ## 小程序列表
 
-- `photo_classification`: 用于对照片进行分组归类
-- 
+- `photo_classification`: 照片分组
+- `port_scanner`: 端口扫描
 
