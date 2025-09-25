@@ -13,3 +13,5 @@
 *.iws
 *.iml
 *.ipr
+
+RCLI/output.json
