@@ -12,6 +12,9 @@ pub struct Opts {
 pub enum Subcommand {
     #[command(name = "csv", about = "将CSV文件转换成其他格式的文件")]
     Csv(CsvOpts),
+
+    #[command(name = "genpass", about = "生成随机密码")]
+    GenPass(GenPassOpts),
 }
 
 #[derive(Debug, Parser, Copy, Clone)]
@@ -20,6 +23,7 @@ pub enum OutputFormat {
     Yaml,
 }
 
+/// 转换csv文件的参数
 #[derive(Debug, Parser)]
 pub struct CsvOpts {
     /// 输入文件路径
@@ -41,6 +45,31 @@ pub struct CsvOpts {
     /// CSV文件是否有头
     #[arg(long, default_value_t = true)] // default_value_t 这个是直接赋值
     pub header: bool,
+}
+
+/// 随机生成密码的参数
+#[derive(Debug, Parser)]
+pub struct GenPassOpts {
+
+    /// 密码的长度
+    #[arg(short, long, default_value_t = 16)]
+    pub length: u8,
+
+    /// 是否需要大写
+    #[arg(long, default_value = "true")]
+    pub uppercase: bool,
+
+    /// 是否包含小写
+    #[arg(long, default_value_t = true)]
+    pub lowercase: bool,
+
+    /// 是否包含数字
+    #[arg(long, default_value_t = true)]
+    pub numbers: bool,
+
+    /// 是否包含符号
+    #[arg(long, default_value_t = true)]
+    pub symbols: bool,
 }
 
 /// 自定义的参数校验函数。用于校验输入文件是否存在

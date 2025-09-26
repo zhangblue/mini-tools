@@ -1,9 +1,8 @@
 use clap::Parser;
-use rcli::{Opts, Subcommand, to_json_file};
+use rcli::{process_gen_pass, to_json_file, Opts, Subcommand};
 
 fn main() -> anyhow::Result<()> {
     let opts = Opts::parse();
-    println!("{:?}", opts);
     match opts.cmd {
         Subcommand::Csv(opts) => {
             let output = if let Some(output) = opts.output {
@@ -12,6 +11,9 @@ fn main() -> anyhow::Result<()> {
                 format!("output.{}", opts.format)
             };
             to_json_file(&opts.input, output, opts.format)?;
+        }
+        Subcommand::GenPass(opts) => {
+            process_gen_pass(&opts)?;
         }
     }
 

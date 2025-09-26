@@ -1,5 +1,4 @@
 mod opts;
-pub use opts::{Opts, Subcommand};
-
 mod process;
-pub use process::to_json_file;
+pub use opts::{GenPassOpts, Opts, Subcommand};
+pub use process::{process_gen_pass, to_json_file};
