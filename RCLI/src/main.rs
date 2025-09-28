@@ -1,5 +1,5 @@
 use clap::Parser;
-use rcli::{process_gen_pass, to_json_file, Opts, Subcommand};
+use rcli::{Opts, Subcommand, process_base64, process_gen_pass, to_json_file};
 
 fn main() -> anyhow::Result<()> {
     let opts = Opts::parse();
@@ -15,7 +15,9 @@ fn main() -> anyhow::Result<()> {
         Subcommand::GenPass(opts) => {
             process_gen_pass(&opts)?;
         }
+        Subcommand::Base64(sub_cmd) => {
+            process_base64(&sub_cmd)?;
+        }
     }
-
     Ok(())
 }

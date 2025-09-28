@@ -1,6 +1,6 @@
-use crate::opts::OutputFormat;
 use serde_json::Value;
 use std::fs;
+use crate::opts::csv::OutputFormat;
 
 // 将数据写成json文件
 pub fn to_json_file(input: &str, output: String, format: OutputFormat) -> anyhow::Result<()> {
