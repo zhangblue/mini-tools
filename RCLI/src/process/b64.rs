@@ -1,8 +1,7 @@
-use crate::Base64SubCommand;
 use crate::opts::base64::Base64Format;
+use crate::{Base64SubCommand, get_reader};
 use base64::Engine;
 use base64::prelude::{BASE64_STANDARD, BASE64_URL_SAFE_NO_PAD};
-use std::fs::File;
 use std::io::Read;
 
 pub fn process_base64(sub_command: &Base64SubCommand) -> anyhow::Result<()> {
@@ -25,7 +24,7 @@ fn process_encode(input: &str, format: Base64Format) -> anyhow::Result<()> {
         Base64Format::UrlSafe => BASE64_URL_SAFE_NO_PAD.encode(&buffer),
     };
     println!();
-    println!("{}", encode);
+    print!("{}", encode);
     Ok(())
 }
 
@@ -46,15 +45,4 @@ fn process_decode(input: &str, format: Base64Format) -> anyhow::Result<()> {
     let decoded = String::from_utf8(decode)?;
     println!("{}", decoded);
     Ok(())
-}
-
-fn get_reader(input: &str) -> anyhow::Result<Box<dyn Read>> {
-    let reader: Box<dyn Read> = if input == "-" {
-        // 这里返回的是stdin。
-        Box::new(std::io::stdin())
-    } else {
-        // 这里返回的是文件读取
-        Box::new(File::open(input)?)
-    };
-    Ok(reader)
 }

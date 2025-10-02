@@ -1,7 +1,7 @@
+use crate::opts::gen_pass::GenPassOpts;
 use rand::Rng;
 use rand::seq::SliceRandom;
 use zxcvbn::zxcvbn;
-use crate::opts::gen_pass::GenPassOpts;
 
 const UPPERCASE: &[u8] = b"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const LOWERCASE: &[u8] = b"abcdefghijklmnopqrstuvwxyz";
@@ -43,7 +43,9 @@ pub fn process_gen_pass(opts: &GenPassOpts) -> anyhow::Result<()> {
     // 密码强度估计
     let estimate = zxcvbn(&string_pass, &[]);
 
-    println!("当前密码：{}  强度: {}", string_pass, estimate.score());
+    print!("{}", string_pass);
+
+    eprintln!("密码强度: {}", estimate.score());
 
     Ok(())
 }

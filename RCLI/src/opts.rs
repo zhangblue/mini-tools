@@ -1,11 +1,13 @@
 pub mod base64;
 pub mod csv;
 pub mod gen_pass;
+pub mod text;
 
 use crate::opts::base64::Base64SubCommand;
 use crate::opts::csv::CsvOpts;
 use crate::opts::gen_pass::GenPassOpts;
 use clap::Parser;
+use crate::TextSubCommand;
 
 #[derive(Debug, Parser)]
 #[command(name = "cli", version, author, about = "rust编写的命令行工具" , long_about = None)]
@@ -23,10 +25,13 @@ pub enum Subcommand {
 
     #[command(subcommand, about = "base64编解码")]
     Base64(Base64SubCommand),
+
+    #[command(subcommand, about = "对文件进行签名")]
+    Text(TextSubCommand),
 }
 
 /// 自定义的参数校验函数。用于校验输入文件是否存在
-pub fn verify_input_file(filename: &str) -> Result<String, String> {
+pub fn verify_file(filename: &str) -> Result<String, String> {
     // if input is "-" or file exists
     if filename == "-" || std::path::Path::new(filename).exists() {
         Ok(filename.into())
@@ -41,12 +46,12 @@ mod tests {
     use super::*;
     #[test]
     fn test_verify_input_file() {
-        assert_eq!(verify_input_file("-"), Ok("-".to_string()));
-        assert_eq!(verify_input_file("*"), Err("输入文件不存在".into()));
+        assert_eq!(verify_file("-"), Ok("-".to_string()));
+        assert_eq!(verify_file("*"), Err("输入文件不存在".into()));
         assert_eq!(
-            verify_input_file("Cargo.toml"),
+            verify_file("Cargo.toml"),
             Ok("Cargo.toml".to_string())
         );
-        assert_eq!(verify_input_file("not-exist"), Err("输入文件不存在".into()));
+        assert_eq!(verify_file("not-exist"), Err("输入文件不存在".into()));
     }
 }

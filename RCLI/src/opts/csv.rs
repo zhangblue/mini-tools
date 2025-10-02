@@ -1,12 +1,12 @@
+use clap::{Parser, ValueEnum};
 use std::fmt::{Display, Formatter};
 use std::str::FromStr;
-use clap::Parser;
 
 /// 转换csv文件的参数
 #[derive(Debug, Parser)]
 pub struct CsvOpts {
     /// 输入文件路径
-    #[arg(short, long, value_parser = crate::opts::verify_input_file)]
+    #[arg(short, long, value_parser = crate::opts::verify_file)]
     pub input: String,
 
     /// 输出文件路径
@@ -14,7 +14,7 @@ pub struct CsvOpts {
     // default_value 含义为调用了："output.json".into()后进行赋值
     pub output: Option<String>,
 
-    #[arg(short, long, default_value = "json", value_parser=parse_format)]
+    #[arg(short, long, default_value = "json")]
     pub format: OutputFormat,
 
     /// 分隔符
@@ -26,20 +26,10 @@ pub struct CsvOpts {
     pub header: bool,
 }
 
-
-
-#[derive(Debug, Parser, Copy, Clone)]
+#[derive(Debug, Parser, Copy, Clone, ValueEnum)]
 pub enum OutputFormat {
     Json,
     Yaml,
-}
-
-
-
-// 验证输入的内容是否合法
-fn parse_format(format: &str) -> Result<OutputFormat, anyhow::Error> {
-    // 这里之所以可以将format转成OutputFormat,是因为给 OutputFormat 实现了FromStr trait。
-    format.parse::<OutputFormat>()
 }
 
 impl From<OutputFormat> for &'static str {
@@ -56,7 +46,6 @@ impl FromStr for OutputFormat {
     type Err = anyhow::Error;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-
         match s.to_lowercase().as_str() {
             "json" => Ok(OutputFormat::Json),
             "yaml" => Ok(OutputFormat::Yaml),
