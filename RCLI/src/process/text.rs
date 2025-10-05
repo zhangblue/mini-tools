@@ -5,6 +5,7 @@ use base64::prelude::BASE64_URL_SAFE_NO_PAD;
 use ed25519_dalek::{Signature, Signer, SigningKey, Verifier, VerifyingKey};
 use std::fs;
 use std::io::Read;
+use tracing::log;
 
 pub fn process_text(sub_command: &TextSubCommand) -> anyhow::Result<()> {
     match sub_command {
@@ -12,7 +13,7 @@ pub fn process_text(sub_command: &TextSubCommand) -> anyhow::Result<()> {
             process_text_sign(&opts.input, &opts.key, opts.format)?;
         }
         TextSubCommand::Verify(opts) => {
-            println!("{:?}", opts);
+            log::info!("{:?}", opts);
         }
     }
     Ok(())

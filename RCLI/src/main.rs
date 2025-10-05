@@ -1,7 +1,13 @@
 use clap::Parser;
-use rcli::{Opts, Subcommand, process_base64, process_gen_pass, to_json_file, process_text};
+use rcli::{
+    Opts, Subcommand, process_base64, process_gen_pass, process_http_serve, process_text,
+    to_json_file,
+};
 
-fn main() -> anyhow::Result<()> {
+#[tokio::main]
+async fn main() -> anyhow::Result<()> {
+    tracing_subscriber::fmt::init();
+
     let opts = Opts::parse();
     match opts.cmd {
         Subcommand::Csv(opts) => {
@@ -21,6 +27,7 @@ fn main() -> anyhow::Result<()> {
         Subcommand::Text(sum_cmd) => {
             process_text(&sum_cmd)?;
         }
+        Subcommand::Http(cmd) => process_http_serve(cmd).await?,
     }
     Ok(())
 }

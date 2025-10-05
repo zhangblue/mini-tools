@@ -1,6 +1,7 @@
 use crate::opts::gen_pass::GenPassOpts;
 use rand::Rng;
 use rand::seq::SliceRandom;
+use tracing::log;
 use zxcvbn::zxcvbn;
 
 const UPPERCASE: &[u8] = b"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -45,7 +46,7 @@ pub fn process_gen_pass(opts: &GenPassOpts) -> anyhow::Result<()> {
 
     print!("{}", string_pass);
 
-    eprintln!("密码强度: {}", estimate.score());
+    log::error!("密码强度: {}", estimate.score());
 
     Ok(())
 }

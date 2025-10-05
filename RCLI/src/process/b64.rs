@@ -3,6 +3,7 @@ use crate::{Base64SubCommand, get_reader};
 use base64::Engine;
 use base64::prelude::{BASE64_STANDARD, BASE64_URL_SAFE_NO_PAD};
 use std::io::Read;
+use tracing::log;
 
 pub fn process_base64(sub_command: &Base64SubCommand) -> anyhow::Result<()> {
     match sub_command {
@@ -23,8 +24,8 @@ fn process_encode(input: &str, format: Base64Format) -> anyhow::Result<()> {
         Base64Format::Standard => BASE64_STANDARD.encode(&buffer),
         Base64Format::UrlSafe => BASE64_URL_SAFE_NO_PAD.encode(&buffer),
     };
-    println!();
-    print!("{}", encode);
+    log::info!("");
+    log::info!("{}", encode);
     Ok(())
 }
 
@@ -43,6 +44,6 @@ fn process_decode(input: &str, format: Base64Format) -> anyhow::Result<()> {
     }?;
 
     let decoded = String::from_utf8(decode)?;
-    println!("{}", decoded);
+    log::info!("{}", decoded);
     Ok(())
 }
